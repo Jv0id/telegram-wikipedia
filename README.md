@@ -18,11 +18,11 @@ Available commands:
 
   ![](img/help.png)
 
-- `/eng` search articles in English:
+- `/en` search articles in English:
 
   ![](img/fate_eng.png)
 
-- `/rus` — search articles in Russian:
+- `/chinese` — search articles in Chinese:
 
   ![](img/fate_rus.png)
 
@@ -59,7 +59,7 @@ docker run telepediabot
 
 To begin, clone this repository:
 ```
-git clone https://github.com/denis-shvetcov/telegram-wikipedia.git
+git clone https://github.com/jv0id/telegram-wikipedia.git
 ```
 Then follow this steps:
 - Get Python `ver. 3.10` or newer

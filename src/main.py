@@ -1,25 +1,32 @@
 import re
+
 import telebot
 import wikipedia
 
 # Token from @BotFather
 API_TOKEN = 'YOUR_TOKEN'
 
+LANGUAGE = 'zh'
+
 
 class WikiBot:
     def __init__(self):
-        self.wiki = wikipedia  # wikipedia object
+        self.wiki = wikipedia
 
 
 def wikiparse(page):
-    wikitext = page.content[:1000]  # message length limit
-    wikimas = wikitext.split('.')
+    if LANGUAGE.__eq__('en'):
+        str = '.'
+    else:
+        str = '。'
+    wikitext = page.content[:5000]  # message length limit
+    wikimas = wikitext.split(str)
     wikimas = wikimas[:-1]
     wikitext2 = ''
     for x in wikimas:
         if not ('==' in x):
             if len((x.strip())) > 3:
-                wikitext2 = wikitext2 + x + '.'
+                wikitext2 = wikitext2 + x + str
         else:
             break
     # Now, using regular expressions, we remove the markup
@@ -38,19 +45,19 @@ def getwiki(wiki, text):
     # Handling an exception that the wikipedia module could return
     except wikipedia.exceptions.DisambiguationError as e:
         opt = e.options
-        msg = "Sorry, your query is too ambiguous!\n" \
-              "'{0}' may refer to:\n" \
+        msg = "对不起，您的查询太模糊了！\n" \
+              "'{0}' 可能指的是:\n" \
               "\n<b>{1}</b>\n" \
               "<b>{2}</b>\n" \
               "<b>{3}</b>\n" \
               "<b>{4}</b>\n" \
               "<b>{5}</b>\n" \
-              "\nTry searching one of the suggestions above.".format(e.title,
-                                                                     opt[0],
-                                                                     opt[1],
-                                                                     opt[2],
-                                                                     opt[3],
-                                                                     opt[4])
+              "\n尝试搜索上述的其中一个建议。".format(e.title,
+                                                     opt[0],
+                                                     opt[1],
+                                                     opt[2],
+                                                     opt[3],
+                                                     opt[4])
         return msg
     except wikipedia.exceptions.PageError:
         try:
@@ -58,75 +65,75 @@ def getwiki(wiki, text):
             msg = wikiparse(suggest_search)
             return msg
         except wikipedia.exceptions.PageError:
-            return 'Sorry, I can\'t find anything on the subject😔.'
+            return '对不起，我找不到关于这个主题的任何信息。😔.'
 
 
 if __name__ == "__main__":
-    # Creating the bot
     bot = telebot.TeleBot(token=API_TOKEN)
-    # For multiuser support, will contain chat ids, as well as current wiki language
     current_chats = {}
 
-    # Handling /start command
+
     @bot.message_handler(commands=['start'])
     def welcome(message):
-        chat_id = message.chat.id  # Getting id of the chat
+        chat_id = message.chat.id
 
         wb = WikiBot()
         current_chats[chat_id] = wb
-        current_chats[chat_id].wiki.set_lang("en")  # set default language
+        current_chats[chat_id].wiki.set_lang("zh")  # 默认语言
 
-        # Welcome message
         bot.send_message(chat_id,
-                         "Nice to meet you, {0.first_name}!\n"
-                         "My name is TelepediaBot, I am a bot that lets you search wikipedia articles right in this "
-                         "chat.\n"
-                         "Consider me you personal wikipedia😉.\n"
-                         "\nType any word and let's start learning!"""
-                         "\n\n<b>Available commands:</b>"
-                         "\n/start - initialize the bot"
-                         "\n/help - to see available commands"
-                         "\n/eng - search articles in English"
-                         "\n/rus - search articles in Russian".format(message.from_user, bot.get_me()),
+                         "你好, {0.first_name}!\n"
+                         "我的名字是Telegram Wikipedias Bot，我是一个让你在这里直接搜索维基百科文章的机器人。 \n"
+                         "把我当作你的个人维基百科😉.\n"
+                         "\n输入任何单词，让我们开始学习吧！"""
+                         "\n\n<b>可使用命令:</b>"
+                         "\n/start - 初始化bot"
+                         "\n/help - 显示帮助信息"
+                         "\n/chinese - 设置为中文搜索结果 (默认)"
+                         "\n/eng - 设置为英文搜索结果".format(message.from_user, bot.get_me()),
                          parse_mode='html')
 
-    # Handling /help command
+
     @bot.message_handler(commands=['help'])
     def command_help(message):
         chat_id = message.chat.id  # Getting id of the chat
-        bot.send_message(chat_id, "\n\n<b>Available commands:</b>"
-                                  "\n/start - initialize the bot"
-                                  "\n/help - to see available commands"
-                                  "\n/eng - search articles in English (default)"
-                                  "\n/rus - search articles in Russian",
+        bot.send_message(chat_id, "\n\n<b>可用命令:</b>"
+                                  "\n/start - 初始化bot"
+                                  "\n/help - 显示帮助信息"
+                                  "\n/chinese - 设置为中文搜索结果 (默认)"
+                                  "\n/eng - 设置为英文搜索结果",
                          parse_mode='html')
 
-    # Handling /ru command
-    @bot.message_handler(commands=['rus'])
+
+    @bot.message_handler(commands=['chinese'])
     def change_lang_ru(message):
         chat_id = message.chat.id  # Getting id of the chat
         if chat_id not in current_chats.keys():
-            bot.send_message(chat_id, "Please initialize chat with /start")
+            bot.send_message(chat_id, "请先运行该命令 /start")
         else:
-            current_chats[chat_id].wiki.set_lang("ru")
-            bot.send_message(chat_id, "Changed wikipedia language to Russian")
+            global LANGUAGE
+            LANGUAGE = 'zh'
+            current_chats[chat_id].wiki.set_lang("zh")
+            bot.send_message(chat_id, "设置为中文搜索结果")
 
-    # Handling /eng command
+
     @bot.message_handler(commands=['eng'])
     def change_lang_ru(message):
         chat_id = message.chat.id  # Getting id of the chat
         if chat_id not in current_chats.keys():
-            bot.send_message(chat_id, "Please use the /start command to begin the chat")
+            bot.send_message(chat_id, "请使用 /start 命令使用")
         else:
+            global LANGUAGE
+            LANGUAGE = 'en'
             current_chats[chat_id].wiki.set_lang("en")
-            bot.send_message(chat_id, "Changed wikipedia language to English")
+            bot.send_message(chat_id, "设置为英文搜索结果")
 
-    # Handling incoming messages
+
     @bot.message_handler(content_types=['text'])
     def get_text_messages(message):
         chat_id = message.chat.id  # Getting id of the chat
         if chat_id not in current_chats.keys():
-            bot.send_message(chat_id, "Please use the /start command to begin the chat")
+            bot.send_message(chat_id, "请使用 /start 命令使用")
         else:
             msg = getwiki(current_chats[chat_id].wiki, message.text)
             bot.send_message(chat_id, msg, parse_mode='html')

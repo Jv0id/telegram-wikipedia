@@ -18,27 +18,6 @@ def test_wikiparse_eng():
     assert main.wikiparse(page2) == answer
 
 
-def test_wikiparse_rus():
-    search1 = 'Часы'
-    search2 = 'Ночь'
-
-    answer1 = "Часы́ — прибор для определения текущего времени суток и измерения продолжительности" \
-              " временных интервалов в единицах, меньших, чем одни сутки." \
-              " Самыми точными часами считаются атомные часы."
-
-    answer2 = "Ночь — промежуток времени от захода Солнца вечером до его восхода утром." \
-              " Продолжительность ночи зависит от географической широты места наблюдения и склонения Солнца." \
-              " Иногда из понятия ночи исключаются интервалы вечерних" \
-              " и утренних гражданских или астрономических сумерек."
-
-    wikipedia.set_lang('ru')
-    page1 = wikipedia.page(search1, auto_suggest=False)
-    page2 = wikipedia.page(search2, auto_suggest=False)
-
-    assert main.wikiparse(page1) == answer1
-    assert main.wikiparse(page2) == answer2
-
-
 def test_getwiki():
     wp = main.WikiBot().wiki
     wp.set_lang('en')
