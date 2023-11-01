@@ -1,7 +1,7 @@
 # Telegram Wikipedia Bot
-| main                                                                                                                       | develop                                                                                                                          |
-|----------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
-| ![`main` tests](https://github.com/denis-shvetcov/telegram-wikipedia/actions/workflows/pipeline.yml/badge.svg?branch=main) | ![`develop` tests](https://github.com/denis-shvetcov/telegram-wikipedia/actions/workflows/pipeline.yml/badge.svg?branch=develop) |
+| main                                                                                                                       | 
+|----------------------------------------------------------------------------------------------------------------------------|
+| ![`main` tests](https://github.com/denis-shvetcov/telegram-wikipedia/actions/workflows/pipeline.yml/badge.svg?branch=main)  |
 ## Description
 A bot for using wikipedia right in the telegram app
 
@@ -12,19 +12,14 @@ Available commands:
 
 - `/start` — exchange greetings with the bot:
 
-  ![](img/start.png)
 
 - `/help` — see available commands:
 
-  ![](img/help.png)
 
 - `/en` search articles in English:
 
-  ![](img/fate_eng.png)
 
 - `/chinese` — search articles in Chinese:
-
-  ![](img/fate_rus.png)
 
 
 ## Getting started
@@ -38,23 +33,13 @@ After that, you need to input it to `API_TOKEN` variable in `main.py`.
 
 To run the bot with Docker, just follow this steps.
 
-First, build Docker image:
+Run the application, passing your API token:
 
 ```
-docker build -t telepediabot .
-```
-
-Then, run the application, passing your API token:
-
-```
-docker run -e API_TOKEN='YOUR_TOKEN' telepediabot
+docker run -d -e API_TOKEN='YOUR_TOKEN' jp0id/telegram-wikipedia
 ```
 For this to work, you have to store your API token as an environment variable.
 
-Alternatively, you can insert your token to `API_TOKEN` variable in `main.py`. Then, run the app:
-```
-docker run telepediabot
-```
 ### Running without Docker
 
 To begin, clone this repository:
