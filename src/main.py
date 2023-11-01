@@ -54,24 +54,10 @@ def getwiki(wiki, text):
         msg = "对不起，您的查询太模糊了！\n" \
               "'{0}' 可能指的是:\n" \
               "\n<b>{1}</b>\n" \
-              "<b>{2}</b>\n" \
-              "<b>{3}</b>\n" \
-              "<b>{4}</b>\n" \
-              "<b>{5}</b>\n" \
-              "\n尝试搜索上述的其中一个建议。".format(e.title,
-                                                     opt[0],
-                                                     opt[1],
-                                                     opt[2],
-                                                     opt[3],
-                                                     opt[4])
+              "\n尝试搜索上述的其中一个建议。".format(e.title, opt)
         return msg
     except wikipedia.exceptions.PageError:
-        try:
-            suggest_search = wiki.page(text, auto_suggest=True)
-            msg = wikiparse(suggest_search)
-            return msg
-        except wikipedia.exceptions.PageError:
-            return '对不起，我找不到关于这个主题的任何信息。😔.'
+        return '对不起，我找不到关于这个主题的任何信息。😔'
 
 
 if __name__ == "__main__":
@@ -90,7 +76,7 @@ if __name__ == "__main__":
         bot.send_message(chat_id,
                          "你好, {0.first_name}!\n"
                          "我的名字是Telegram Wikipedias Bot，我是一个让你在这里直接搜索维基百科文章的机器人。 \n"
-                         "把我当作你的个人维基百科😉.\n"
+                         "把我当作你的个人维基百科😉\n"
                          "\n输入任何单词，让我们开始学习吧！"""
                          "\n\n<b>可使用命令:</b>"
                          "\n/start - 初始化bot"
