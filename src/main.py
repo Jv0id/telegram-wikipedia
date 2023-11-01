@@ -20,7 +20,7 @@ def wikiparse(page):
         str = '.'
     else:
         str = '。'
-    wikitext = page.content[:5000]  # message length limit
+    wikitext = page.content[:4000]
     wikimas = wikitext.split(str)
     wikimas = wikimas[:-1]
     wikitext2 = ''
@@ -57,7 +57,7 @@ def getwiki(wiki, text):
               "\n尝试搜索上述的其中一个建议。".format(e.title, opt)
         return msg
     except wikipedia.exceptions.PageError:
-        return '对不起，我找不到关于这个主题的任何信息。😔'
+        return '对不起，我找不到关于这个主题的任何信息，可能该词条还没有建立。😔'
 
 
 if __name__ == "__main__":
@@ -76,10 +76,10 @@ if __name__ == "__main__":
         bot.send_message(chat_id,
                          "你好, {0.first_name}!\n"
                          "我的名字是Telegram Wikipedias Bot，我是一个让你在这里直接搜索维基百科文章的机器人。 \n"
-                         "把我当作你的个人维基百科😉\n"
+                         "把我当作你的个人维基百科搜索工具😉\n"
                          "\n输入任何单词，让我们开始学习吧！"""
                          "\n\n<b>可使用命令:</b>"
-                         "\n/start - 初始化bot"
+                         "\n/start - 开始使用bot"
                          "\n/help - 显示帮助信息"
                          "\n/chinese - 设置为中文搜索结果 (默认)"
                          "\n/eng - 设置为英文搜索结果".format(message.from_user, bot.get_me()),
@@ -90,7 +90,7 @@ if __name__ == "__main__":
     def command_help(message):
         chat_id = message.chat.id  # Getting id of the chat
         bot.send_message(chat_id, "\n\n<b>可用命令:</b>"
-                                  "\n/start - 初始化bot"
+                                  "\n/start - 开始使用bot"
                                   "\n/help - 显示帮助信息"
                                   "\n/chinese - 设置为中文搜索结果 (默认)"
                                   "\n/eng - 设置为英文搜索结果",
