@@ -2,6 +2,7 @@ import re
 
 import telebot
 import wikipedia
+from zhconv import zhconv
 
 # Token from @BotFather
 API_TOKEN = 'YOUR_TOKEN'
@@ -25,7 +26,7 @@ def wikiparse(page):
     wikitext2 = ''
     for x in wikimas:
         if not ('==' in x):
-            if len((x.strip())) > 3:
+            if len((x.strip())) > 6:
                 wikitext2 = wikitext2 + x + str
         else:
             break
@@ -33,8 +34,8 @@ def wikiparse(page):
     wikitext2 = re.sub('\([^()]*\)', '', wikitext2)
     wikitext2 = re.sub('\([^()]*\)', '', wikitext2)
     wikitext2 = re.sub('\{[^\{\}]*\}', '', wikitext2)
-    # Returning a text string
-    return wikitext2
+    new_str = zhconv.convert(wikitext2, 'zh-hans')
+    return new_str
 
 
 def getwiki(wiki, text):
