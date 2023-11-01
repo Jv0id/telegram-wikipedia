@@ -1,11 +1,11 @@
+import os
 import re
 
 import telebot
 import wikipedia
 from zhconv import zhconv
 
-# Token from @BotFather
-API_TOKEN = 'YOUR_TOKEN'
+API_TOKEN = os.environ.get("API_TOKEN")
 
 LANGUAGE = 'zh'
 

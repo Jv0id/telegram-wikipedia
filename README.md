@@ -36,7 +36,7 @@ To run the bot with Docker, just follow this steps.
 Run the application, passing your API token:
 
 ```
-docker run -d -e API_TOKEN='YOUR_TOKEN' jp0id/telegram-wikipedia
+docker run -d -e API_TOKEN='YOUR_TOKEN' --restart=always jp0id/telegram-wikipedia
 ```
 For this to work, you have to store your API token as an environment variable.
 
@@ -46,6 +46,10 @@ To begin, clone this repository:
 ```
 git clone https://github.com/jv0id/telegram-wikipedia.git
 ```
+
+Change `API_TOKEN = os.environ.get("API_TOKEN")` to `API_TOKEN = 'xxxxx:xxxxxxxx'`
+
+
 Then follow this steps:
 - Get Python `ver. 3.10` or newer
 - Run the requirements installation `pip install -r requirements.txt`
