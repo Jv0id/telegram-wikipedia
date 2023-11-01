@@ -40,9 +40,14 @@ def wikiparse(page):
 
 def getwiki(wiki, text):
     try:
+        if LANGUAGE.__eq__('en'):
+            str = 'en'
+        else:
+            str = 'zh'
         direct_search = wiki.page(text, auto_suggest=False)
         msg = wikiparse(direct_search)
-        return msg
+        info = '更多信息请访问: ' + 'https://' + str + '.wikipedia.org/wiki/' + text
+        return msg + '\n\n' + info
     # Handling an exception that the wikipedia module could return
     except wikipedia.exceptions.DisambiguationError as e:
         opt = e.options
