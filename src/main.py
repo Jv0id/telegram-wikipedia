@@ -1,9 +1,13 @@
+# -*- coding: UTF-8 -*-
 import os
 import re
 
 import telebot
 import wikipedia
 from zhconv import zhconv
+from telebot import apihelper
+
+apihelper.API_URL = "http://47.243.197.2:8081/bot{0}/{1}"
 
 API_TOKEN = os.environ.get("API_TOKEN")
 
@@ -62,6 +66,7 @@ def getwiki(wiki, text):
 
 if __name__ == "__main__":
     bot = telebot.TeleBot(token=API_TOKEN)
+
     current_chats = {}
 
 
@@ -98,7 +103,7 @@ if __name__ == "__main__":
 
 
     @bot.message_handler(commands=['chinese'])
-    def change_lang_ru(message):
+    def change_lang_zh(message):
         chat_id = message.chat.id  # Getting id of the chat
         if chat_id not in current_chats.keys():
             bot.send_message(chat_id, "请先运行该命令 /start")
@@ -110,7 +115,7 @@ if __name__ == "__main__":
 
 
     @bot.message_handler(commands=['eng'])
-    def change_lang_ru(message):
+    def change_lang_en(message):
         chat_id = message.chat.id  # Getting id of the chat
         if chat_id not in current_chats.keys():
             bot.send_message(chat_id, "请使用 /start 命令使用")
@@ -129,7 +134,6 @@ if __name__ == "__main__":
         else:
             msg = getwiki(current_chats[chat_id].wiki, message.text)
             bot.send_message(chat_id, msg, parse_mode='html')
-
 
     # Start
     bot.polling(none_stop=True)
